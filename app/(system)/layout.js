@@ -29,8 +29,11 @@ export default function Layout({ children }) {
                     </div>
                     <NavbarCollapse>
                         <NavbarLink as={Link} href="/" active={route === '/'}>Início</NavbarLink>
-                        <NavbarLink as={Link} href="/author" active={route === '/curso'}>Autor</NavbarLink>
-                        <NavbarLink as={Link} href="/reader" active={route === '/tipocurso'}>Leitor</NavbarLink>
+                        <NavbarLink as={Link} href="/author" active={route === '/author'}>Autores</NavbarLink>
+                        <NavbarLink as={Link} href="/news" active={route === '/news'}>Notícias</NavbarLink>
+                        <NavbarLink as={Link} href="/reader" active={route === '/reader'}>Leitores</NavbarLink>
+                        <NavbarLink as={Link} href="/comment" active={route === '/comment'}>Comentários</NavbarLink>
+                        <NavbarLink as={Link} href="/reaction" active={route === '/reaction'}>Reações</NavbarLink>
                     </NavbarCollapse>
                 </Navbar>
             </header>

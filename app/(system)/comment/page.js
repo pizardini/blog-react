@@ -1,4 +1,4 @@
-export default function Cpmment() {
+export default function Comment() {
     return(
         <>
             Comentários aqui
