@@ -109,34 +109,7 @@ export default function NewAuthor() {
                         </div>
                         <div className="mb-2">
                             <Label htmlFor="birthDate">Data de Nascimento</Label>
-                            {/* <input id="birthDate" type="date" {...register("birthDate")}/> */}
                             <TextInput id="birthDate" type="date" {...register("birthDate")}/>
-                            {/* <Datepicker 
-                                id="birthDate" 
-                                language="pt-BR" 
-                                labelTodayButton="Hoje" 
-                                labelClearButton="Limpar"
-                                onChange={(date) => {
-                                    console.log(date);
-                                    register("birthDate").onChange(date)}}
-                                {...register("birthDate")}
-                            /> */}
-                            {/* <Controller
-                            name={"birthDate"}
-                            control={control}
-                            defaultValue={new Date()}
-                            render={({ field: { onSelectedDateChanged, value } }) => {
-                                return (
-                                <Datepicker
-                                onSelectedDateChanged={(date) => {
-                                    console.log(date);
-                                    register("birthDate").onSelectedDateChanged(date)}}
-                                {...register("birthDate")}
-                                    selected={value}
-                                />
-                                );
-                            }}
-                            /> */}
                             <span className="text-sm text-red-600">{errors?.birthDate?.message}</span>
                         </div>
                         <div className="mb-2">

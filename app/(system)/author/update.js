@@ -32,7 +32,6 @@ export default function EditAuthor({ id }) {
 
     const onSubmit = async (data) => {
         setBusy(busy => true);
-        data.active = data.active === "true";
         data.id = id;
         const resultado = await Update(data);
 
@@ -49,7 +48,7 @@ export default function EditAuthor({ id }) {
         }
 
         setBusy(busy => false);
-        console.log(data);
+        console.log(data.active);
     }
 
     const closeModal = () => {
@@ -87,8 +86,6 @@ export default function EditAuthor({ id }) {
                 email: result.data.email,
                 active: result.data.active ? "true" : "false",
             });
-            console.log(result.data)
-            console.log(result.data.birthDate)
             console.log(result.data.active)
         }
         else {
