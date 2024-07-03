@@ -74,12 +74,15 @@ export default function EditAuthor({ id }) {
         if (result.success) {
             if (result.message !== '')
                 toast.success(result.message);
-
+                
+            let input = result.data.birthDate;
+            let dateTime = new Date(input);
+            let formattedDate = dateTime.toISOString().split('T')[0];
             reset({ 
                 name: result.data.name, 
                 nickname: result.data.nickname, 
                 email: result.data.email, 
-                birthDate: result.data.birthDate, 
+                birthDate: formattedDate, 
                 password: result.data.password, 
                 email: result.data.email,
                 active: result.data.active ? "true" : "false",
