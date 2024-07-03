@@ -3,7 +3,8 @@
 import { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Button, Label, Modal, TextInput, Textarea, Radio, Datepicker } from "flowbite-react"
+import { Button, Label, Modal, TextInput, Textarea, Radio, Datepicker } from "flowbite-react";
+import DatePicker from "react-datepicker";
 import { HiPlus } from "react-icons/hi";
 import { authorSchema } from "./schema";
 import { AuthorContext } from "./context";
@@ -18,7 +19,7 @@ export default function NewAuthor() {
     const {setValue} = useForm();
 
     const randomPass = () => {
-        const newPass = Math.random().toString(36).slice(-8); // Gera uma senha aleatória de 8 caracteres
+        const newPass = Math.random().toString(36).slice(-8); // Gera uma senha aleatória
         setPassword(newPass);
         setValue("password", newPass);
       }
@@ -28,7 +29,7 @@ export default function NewAuthor() {
             name: '',
             nickname: '',
             email: '',
-            birthdate: null,
+            birthDate: '',
             password: '',
             // token: '',
             active: 'true'
@@ -57,7 +58,7 @@ export default function NewAuthor() {
 
         setBusy(busy => false);
 
-        console.log(data.birthdate)
+        console.log(data)
     }
 
     const closeModal = () => {
@@ -65,13 +66,20 @@ export default function NewAuthor() {
             name: '',
             nickname: '',
             email: '',
-            birthdate: null,
+            birthDate: new Date(),
             password: '',
             // token: '',
             active: 'true'
         })
         setModalOpen(false);
     }
+
+    const handleChange = (dateChange) => {
+        setValue("dateOfBirth", dateChange, {
+          shouldDirty: true
+        });
+        setDate(dateChange);
+      };
 
     return (
         <>
@@ -91,36 +99,45 @@ export default function NewAuthor() {
                         </div>
                         <div className="mb-2">
                             <Label htmlFor="nickname">Apelido</Label>
-                            <TextInput id="descricao" placeholder="Informe o apelido" {...register("nickname")} />
+                            <TextInput id="nickname" placeholder="Informe o apelido" {...register("nickname")} />
                             <span className="text-sm text-red-600">{errors?.nickname?.message}</span>
                         </div>
                         <div className="mb-2">
                             <Label htmlFor="email">E-mail</Label>
-                            <TextInput id="descricao" icon={HiMail} placeholder="Informe o e-mail" {...register("email")} required/>
+                            <TextInput id="email" icon={HiMail} placeholder="Informe o e-mail" {...register("email")} required/>
                             <span className="text-sm text-red-600">{errors?.email?.message}</span>
                         </div>
                         <div className="mb-2">
-                            <Label htmlFor="birthdate">Data de Nascimento</Label>
-                            <TextInput id="birthdate" {...register("birthdate")}/>
-                            {/* <Controller
-                                control={control}
-                                name="birthdate"
-                                render={({ field: { onChange, value } }) => (
-                                <Datepicker 
-                                    onChange={onChange}
-                                    value={value ? new Date(value) : null}
-                                />
-                                )}
-                            /> */}
+                            <Label htmlFor="birthDate">Data de Nascimento</Label>
+                            {/* <input id="birthDate" type="date" {...register("birthDate")}/> */}
+                            <TextInput id="birthDate" type="date" {...register("birthDate")}/>
                             {/* <Datepicker 
-                                id="birthdate" 
+                                id="birthDate" 
                                 language="pt-BR" 
                                 labelTodayButton="Hoje" 
                                 labelClearButton="Limpar"
-                                onChange={(date) => register("birthdate").onChange(date)}
-                                {...register("birthdate")}
+                                onChange={(date) => {
+                                    console.log(date);
+                                    register("birthDate").onChange(date)}}
+                                {...register("birthDate")}
                             /> */}
-                            <span className="text-sm text-red-600">{errors?.birthdate?.message}</span>
+                            {/* <Controller
+                            name={"birthDate"}
+                            control={control}
+                            defaultValue={new Date()}
+                            render={({ field: { onSelectedDateChanged, value } }) => {
+                                return (
+                                <Datepicker
+                                onSelectedDateChanged={(date) => {
+                                    console.log(date);
+                                    register("birthDate").onSelectedDateChanged(date)}}
+                                {...register("birthDate")}
+                                    selected={value}
+                                />
+                                );
+                            }}
+                            /> */}
+                            <span className="text-sm text-red-600">{errors?.birthDate?.message}</span>
                         </div>
                         <div className="mb-2">
                             <Label htmlFor="password">Password</Label>

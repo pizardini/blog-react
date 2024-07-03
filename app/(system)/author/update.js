@@ -20,7 +20,7 @@ export default function EditAuthor({ id }) {
             name: '',
             nickname: '',
             email: '',
-            birthdate: '',
+            birthDate: '',
             password: '',
             // token: '',
             active: ''
@@ -31,24 +31,25 @@ export default function EditAuthor({ id }) {
     const fallbackContext = useContext(AuthorContext);
 
     const onSubmit = async (data) => {
-        // setBusy(busy => true);
-
+        setBusy(busy => true);
+        data.active = data.active === "true";
         data.id = id;
-        const result = await Update(true);
+        const resultado = await Update(data);
 
-        if (result.success) {
+        if (resultado.success) {
             closeModal();
             fallbackContext.update(true);
 
-            if (result.message !== '')
-                toast.success(result.message);
+            if (resultado.message !== '')
+                toast.success(resultado.message);
         }
         else {
-            if (result.message !== '')
-                toast.error(result.message);
+            if (resultado.message !== '')
+                toast.error(resultado.message);
         }
-        console.log(data)
-        // setBusy(busy => false);
+
+        setBusy(busy => false);
+        console.log(data);
     }
 
     const closeModal = () => {
@@ -56,7 +57,7 @@ export default function EditAuthor({ id }) {
             name: '',
             nickname: '',
             email: '',
-            birthDate: '',
+            birthDate: new Date(),
             password: '',
             // token: '',
             active: ''
@@ -81,7 +82,7 @@ export default function EditAuthor({ id }) {
                 birthDate: result.data.birthDate, 
                 password: result.data.password, 
                 email: result.data.email,
-                active: result.data.active
+                active: result.data.active ? "true" : "false",
             });
             console.log(result.data)
             console.log(result.data.birthDate)
@@ -123,17 +124,18 @@ export default function EditAuthor({ id }) {
                     </div>
                     <div className="mb-2">
                         <Label htmlFor="nickname">Apelido</Label>
-                        <TextInput id="descricao" placeholder="Informe o apelido" {...register("nickname")} />
+                        <TextInput id="nickname" placeholder="Informe o apelido" {...register("nickname")} />
                         <span className="text-sm text-red-600">{errors?.nickname?.message}</span>
                     </div>
                     <div className="mb-2">
                         <Label htmlFor="email">E-mail</Label>
-                        <TextInput id="descricao" icon={HiMail} placeholder="Informe o e-mail" {...register("email")} required/>
+                        <TextInput id="email" icon={HiMail} placeholder="Informe o e-mail" {...register("email")} required/>
                         <span className="text-sm text-red-600">{errors?.email?.message}</span>
                     </div>
                     <div className="mb-2">
                         <Label htmlFor="birthDate">Data de Nascimento</Label>
-                        <TextInput id="birthDate" {...register("birthDate")} />
+                        {/* <input id="birthDate" type="date" {...register("birthDate")}/> */}
+                        <TextInput id="birthDate" type="date" {...register("birthDate")}/>
                         <span className="text-sm text-red-600">{errors?.birthDate?.message}</span>
                     </div>
                     <div className="mb-2">
