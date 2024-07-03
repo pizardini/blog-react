@@ -11,7 +11,7 @@ export const authorSchema = yup.object({
     email: yup.string()
         .email()
         .required('O email é obrigatório'),
-    birthdate: yup.date(),
+    birthdate: yup.date().required('Data de Nascimento é obrigatória').nullable(),
     password: yup.string(),
         // .password()
         // .required(),

@@ -1,14 +1,15 @@
 'use client'
 
 import { useContext, useState } from "react";
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Button, Label, Modal, TextInput, Textarea } from "flowbite-react"
+import { Button, Label, Modal, TextInput, Textarea, Radio, Datepicker } from "flowbite-react"
 import { HiPlus } from "react-icons/hi";
 import { authorSchema } from "./schema";
 import { AuthorContext } from "./context";
 import { toast } from "react-toastify";
 import { Insert } from "./api";
+import { HiMail } from "react-icons/hi";
 
 export default function NewAuthor() {
     const [modalOpen, setModalOpen] = useState(false);
@@ -22,12 +23,12 @@ export default function NewAuthor() {
         setValue("password", newPass);
       }
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({
+    const { control, register, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
             name: '',
             nickname: '',
             email: '',
-            birthdate: '',
+            birthdate: null,
             password: '',
             token: '',
             active: 'true'
@@ -55,6 +56,8 @@ export default function NewAuthor() {
         }
 
         setBusy(busy => false);
+
+        console.log(data)
     }
 
     const closeModal = () => {
@@ -62,12 +65,18 @@ export default function NewAuthor() {
             name: '',
             nickname: '',
             email: '',
-            birthdate: '',
+            birthdate: null,
             password: '',
             token: '',
             active: 'true'
         })
         setModalOpen(false);
+    }
+
+    const handleDateChange = (date) => {
+        setSelectedDate(date)
+        setValue("birthdate", date); // Atualiza o valor do campo birthdate no form
+        console.log(date);
     }
 
     return (
@@ -93,21 +102,48 @@ export default function NewAuthor() {
                         </div>
                         <div className="mb-2">
                             <Label htmlFor="email">E-mail</Label>
-                            <TextInput id="descricao" placeholder="Informe o e-mail" {...register("email")} />
+                            <TextInput id="descricao" icon={HiMail} placeholder="Informe o e-mail" {...register("email")} required/>
                             <span className="text-sm text-red-600">{errors?.email?.message}</span>
                         </div>
                         <div className="mb-2">
                             <Label htmlFor="birthdate">Data de Nascimento</Label>
-                            <TextInput id="birthdate" {...register("birthdate")} />
+                            {/* <Controller
+                            control={control}
+                            name="birthdate"
+                            defaultValue={new Date()} // Set the initial value to the current date
+                            render={({ field: { onChange, value } }) => (
+                                <Datepicker id="birthdate" language="pt-BR" labelTodayButton="Hoje" onChange={onChange} value={value ? new Date(value) : null} />
+                            )}
+                            /> */}
+                            <Datepicker 
+                                id="birthdate" 
+                                language="pt-BR" 
+                                labelTodayButton="Hoje" 
+                                labelClearButton="Limpar"
+                                onChange={(date) => register("birthdate").onChange(date)}
+                                {...register("birthdate")}
+                            />
                             <span className="text-sm text-red-600">{errors?.birthdate?.message}</span>
                         </div>
                         <div className="mb-2">
                             <Label htmlFor="password">Password</Label>
-                            <TextInput id="password" {...register("password")}/>
+                            <TextInput id="password" type="password" {...register("password")}/>
                             {/* <TextInput id="password" {...register("password")} value={password} onChange={(e) => setPassword(e.target.value)}/> */}
                             {/* <Button type="button" className="ml-2 px-3 py-1 bg-blue-500 text-white rounded-md" onClick={randomPass}>Gerar</Button> */}
                             <span className="text-sm text-red-600">{errors?.password?.message}</span>
                         </div>
+                        <fieldset className="flex max-w-md flex-col gap-4">
+                            <Label htmlFor="active">Status</Label>
+                            <div className="flex items-center gap-2">
+                                <Radio id="active" {...register("active", { required: true })} value="true" />
+                                <Label htmlFor="active">Ativo</Label>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Radio id="inactive" {...register("active", { required: true })} value="false" />
+                                <Label htmlFor="inactive">Inativo</Label>
+                            </div>
+                            <span className="text-sm text-red-600">{errors?.active?.message}</span>
+                        </fieldset>
                     </Modal.Body>
                     <Modal.Footer className="justify-end">
                         <Button size="sm" type="submit" isProcessing={busy} disabled={busy}>
