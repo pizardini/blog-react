@@ -8,7 +8,7 @@ import { authorSchema } from "./schema";
 import { AuthorContext } from "./context";
 import { toast } from "react-toastify";
 import { HiMail } from "react-icons/hi";
-import { Obtain } from "./api";
+import { Obtain, Update } from "./api";
 
 export default function EditAuthor({ id }) {
     const [modalOpen, setModalOpen] = useState(true);
@@ -20,10 +20,10 @@ export default function EditAuthor({ id }) {
             name: '',
             nickname: '',
             email: '',
-            birthdate: null,
+            birthdate: '',
             password: '',
-            token: '',
-            active: 'true'
+            // token: '',
+            active: ''
         },
         resolver: yupResolver(authorSchema),
     });
@@ -31,10 +31,10 @@ export default function EditAuthor({ id }) {
     const fallbackContext = useContext(AuthorContext);
 
     const onSubmit = async (data) => {
-        setBusy(busy => true);
+        // setBusy(busy => true);
 
-        const result = { success: false, message: '' };
-        console.log('chamar a função de atualização');
+        data.id = id;
+        const result = await Update(true);
 
         if (result.success) {
             closeModal();
@@ -47,8 +47,8 @@ export default function EditAuthor({ id }) {
             if (result.message !== '')
                 toast.error(result.message);
         }
-
-        setBusy(busy => false);
+        console.log(data)
+        // setBusy(busy => false);
     }
 
     const closeModal = () => {
@@ -56,12 +56,13 @@ export default function EditAuthor({ id }) {
             name: '',
             nickname: '',
             email: '',
-            birthdate: null,
+            birthDate: '',
             password: '',
-            token: '',
+            // token: '',
             active: ''
         })
         setModalOpen(false);
+        fallbackContext.close();
     }
 
     const getData = async () => {
@@ -77,12 +78,13 @@ export default function EditAuthor({ id }) {
                 name: result.data.name, 
                 nickname: result.data.nickname, 
                 email: result.data.email, 
-                birthdate: result.data.birthdate, 
+                birthDate: result.data.birthDate, 
                 password: result.data.password, 
                 email: result.data.email,
                 active: result.data.active
             });
-            console.log(result.data.birthdate)
+            console.log(result.data)
+            console.log(result.data.birthDate)
             console.log(result.data.active)
         }
         else {
@@ -94,19 +96,20 @@ export default function EditAuthor({ id }) {
         setBusy(p => false);
     }
 
-    useEffect(() => {
-            getData();
-    }, []);
-
     // useEffect(() => {
-    //     if (primeiroAcesso === null)
-    //         setPrimeiroAcesso(true);
-    
-    //     if (primeiroAcesso) {
-    //         setPrimeiroAcesso(false);
     //         getData();
-    //     }
-    // }, [primeiroAcesso]);
+            
+    // }, []);
+
+    useEffect(() => {
+        if (primeiroAcesso === null)
+            setPrimeiroAcesso(true);
+
+        if (primeiroAcesso) {
+            setPrimeiroAcesso(false);
+            getData();
+        }
+    }, [primeiroAcesso]);
 
     return (
         <Modal show={modalOpen} onClose={closeModal}>
@@ -129,9 +132,9 @@ export default function EditAuthor({ id }) {
                         <span className="text-sm text-red-600">{errors?.email?.message}</span>
                     </div>
                     <div className="mb-2">
-                        <Label htmlFor="birthdate">Data de Nascimento</Label>
-                        <TextInput id="birthdate" {...register("birthdate")} />
-                        <span className="text-sm text-red-600">{errors?.birthdate?.message}</span>
+                        <Label htmlFor="birthDate">Data de Nascimento</Label>
+                        <TextInput id="birthDate" {...register("birthDate")} />
+                        <span className="text-sm text-red-600">{errors?.birthDate?.message}</span>
                     </div>
                     <div className="mb-2">
                         <Label htmlFor="password">Password</Label>
@@ -143,11 +146,11 @@ export default function EditAuthor({ id }) {
                     <fieldset className="flex max-w-md flex-col gap-4">
                         <Label htmlFor="active">Status</Label>
                         <div className="flex items-center gap-2">
-                            <Radio id="active" {...register("active", { required: true })} value="true" />
+                            <Radio id="active" {...register("active")} type="radio" value="true" />
                             <Label htmlFor="active">Ativo</Label>
                         </div>
                         <div className="flex items-center gap-2">
-                            <Radio id="inactive" {...register("active", { required: true })} value="false" />
+                            <Radio id="inactive" {...register("active")} type="radio" value="false" />
                             <Label htmlFor="inactive">Inativo</Label>
                         </div>
                         <span className="text-sm text-red-600">{errors?.active?.message}</span>

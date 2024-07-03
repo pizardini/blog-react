@@ -30,7 +30,7 @@ export default function NewAuthor() {
             email: '',
             birthdate: null,
             password: '',
-            token: '',
+            // token: '',
             active: 'true'
         },
         resolver: yupResolver(authorSchema),
@@ -57,7 +57,7 @@ export default function NewAuthor() {
 
         setBusy(busy => false);
 
-        console.log(data)
+        console.log(data.birthdate)
     }
 
     const closeModal = () => {
@@ -67,16 +67,10 @@ export default function NewAuthor() {
             email: '',
             birthdate: null,
             password: '',
-            token: '',
+            // token: '',
             active: 'true'
         })
         setModalOpen(false);
-    }
-
-    const handleDateChange = (date) => {
-        setSelectedDate(date)
-        setValue("birthdate", date); // Atualiza o valor do campo birthdate no form
-        console.log(date);
     }
 
     return (
@@ -107,22 +101,25 @@ export default function NewAuthor() {
                         </div>
                         <div className="mb-2">
                             <Label htmlFor="birthdate">Data de Nascimento</Label>
+                            <TextInput id="birthdate" {...register("birthdate")}/>
                             {/* <Controller
-                            control={control}
-                            name="birthdate"
-                            defaultValue={new Date()} // Set the initial value to the current date
-                            render={({ field: { onChange, value } }) => (
-                                <Datepicker id="birthdate" language="pt-BR" labelTodayButton="Hoje" onChange={onChange} value={value ? new Date(value) : null} />
-                            )}
+                                control={control}
+                                name="birthdate"
+                                render={({ field: { onChange, value } }) => (
+                                <Datepicker 
+                                    onChange={onChange}
+                                    value={value ? new Date(value) : null}
+                                />
+                                )}
                             /> */}
-                            <Datepicker 
+                            {/* <Datepicker 
                                 id="birthdate" 
                                 language="pt-BR" 
                                 labelTodayButton="Hoje" 
                                 labelClearButton="Limpar"
                                 onChange={(date) => register("birthdate").onChange(date)}
                                 {...register("birthdate")}
-                            />
+                            /> */}
                             <span className="text-sm text-red-600">{errors?.birthdate?.message}</span>
                         </div>
                         <div className="mb-2">
@@ -135,11 +132,12 @@ export default function NewAuthor() {
                         <fieldset className="flex max-w-md flex-col gap-4">
                             <Label htmlFor="active">Status</Label>
                             <div className="flex items-center gap-2">
-                                <Radio id="active" {...register("active", { required: true })} value="true" />
+                                {/* <Radio id="active" {...register("active", { required: true })} value="true" /> */}
+                                <Radio id="active" {...register("active")} type="radio" value="true" />
                                 <Label htmlFor="active">Ativo</Label>
                             </div>
                             <div className="flex items-center gap-2">
-                                <Radio id="inactive" {...register("active", { required: true })} value="false" />
+                                <Radio id="inactive" {...register("active")} type="radio" value="false" />
                                 <Label htmlFor="inactive">Inativo</Label>
                             </div>
                             <span className="text-sm text-red-600">{errors?.active?.message}</span>

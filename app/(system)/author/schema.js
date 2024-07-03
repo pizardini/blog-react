@@ -15,7 +15,7 @@ export const authorSchema = yup.object({
     password: yup.string(),
         // .password()
         // .required(),
-    token: yup.string(),
+    // token: yup.string(),
         // .token()
     active: yup.bool(),
 }).required();
