@@ -48,7 +48,6 @@ export default function EditAuthor({ id }) {
         }
 
         setBusy(busy => false);
-        console.log(data.active);
     }
 
     const closeModal = () => {
@@ -86,7 +85,6 @@ export default function EditAuthor({ id }) {
                 email: result.data.email,
                 active: result.data.active ? "true" : "false",
             });
-            console.log(result.data.active)
         }
         else {
             if (result.message !== '')
@@ -134,7 +132,6 @@ export default function EditAuthor({ id }) {
                     </div>
                     <div className="mb-2">
                         <Label htmlFor="birthDate">Data de Nascimento</Label>
-                        {/* <input id="birthDate" type="date" {...register("birthDate")}/> */}
                         <TextInput id="birthDate" type="date" {...register("birthDate")}/>
                         <span className="text-sm text-red-600">{errors?.birthDate?.message}</span>
                     </div>

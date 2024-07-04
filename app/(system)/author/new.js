@@ -4,7 +4,6 @@ import { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Button, Label, Modal, TextInput, Textarea, Radio, Datepicker } from "flowbite-react";
-import DatePicker from "react-datepicker";
 import { HiPlus } from "react-icons/hi";
 import { authorSchema } from "./schema";
 import { AuthorContext } from "./context";
@@ -57,8 +56,6 @@ export default function NewAuthor() {
         }
 
         setBusy(busy => false);
-
-        console.log(data)
     }
 
     const closeModal = () => {
@@ -73,13 +70,6 @@ export default function NewAuthor() {
         })
         setModalOpen(false);
     }
-
-    const handleChange = (dateChange) => {
-        setValue("dateOfBirth", dateChange, {
-          shouldDirty: true
-        });
-        setDate(dateChange);
-      };
 
     return (
         <>
@@ -122,7 +112,6 @@ export default function NewAuthor() {
                         <fieldset className="flex max-w-md flex-col gap-4">
                             <Label htmlFor="active">Status</Label>
                             <div className="flex items-center gap-2">
-                                {/* <Radio id="active" {...register("active", { required: true })} value="true" /> */}
                                 <Radio id="active" {...register("active")} type="radio" value="true" />
                                 <Label htmlFor="active">Ativo</Label>
                             </div>
