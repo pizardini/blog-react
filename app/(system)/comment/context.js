@@ -1,3 +1,3 @@
 const { createContext } = require("react");
 
-export const CommnetContext = createContext(null);
+export const CommentContext = createContext(null);

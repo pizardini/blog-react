@@ -4,7 +4,7 @@ import NewReader from "./new";
 import { ReaderContext } from "./context";
 import { useEffect, useState } from "react";
 import { Button, Spinner, Table } from "flowbite-react";
-import { List } from "./api";
+import { ListReaders } from "./api";
 import { toast } from "react-toastify";
 import RemoveReader from "./remove";
 import EditReader from "./update";
@@ -19,7 +19,7 @@ export default function Reader() {
     const updateList = async () => {
 
         setBusy(p => true);
-        const result = await List();
+        const result = await ListReaders();
 
     if (result.success && result.data !== null) {
         let grid = result.data.map((p) =>

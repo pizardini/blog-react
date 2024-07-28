@@ -12,7 +12,7 @@ export async function Insert(data) {
         body: JSON.stringify(data)
     };
 
-    const url = process.env.API_URL + "/reader";
+    const url = process.env.API_URL + "/comment";
 
     let reply = {
         success: undefined,
@@ -24,7 +24,7 @@ export async function Insert(data) {
             if (result.status == 200) {
                 //ações em caso de sucesso
                 reply.success = true;
-                reply.message = "Salvo com sucesso";
+                reply.message = "Comentário salvo com sucesso";
             }
             else {
                 //ações em caso de erro
@@ -56,21 +56,21 @@ export async function Insert(data) {
     return reply;
 }
 
-export async function ListReaders() {
+export async function List() {
     const args = {
         method: 'GET',
-        cache: 'no-cache',
         headers: {
             'x-api-key': process.env.API_KEY
-        }
+        },
+        cache: 'no-store'
     };
 
-    const url = process.env.API_URL + "/reader";
+    const url = process.env.API_URL + "/comment";
 
     let reply = {
         success: undefined,
         message: '',
-        data: null
+        data: null,
     };
 
     await fetch(url, args).then((result) => {
@@ -119,7 +119,7 @@ export async function Remove(id) {
         }
     };
 
-    const url = process.env.API_URL + "/reader/" + id;
+    const url = process.env.API_URL + "/comment/" + id;
 
     let reply = {
         success: undefined,
@@ -130,9 +130,8 @@ export async function Remove(id) {
         result.text().then((resultData) => {
             if (result.status == 200) {
                 //ações em caso de sucesso
-                console.log("teste")
                 reply.success = true;
-                reply.message = "Leitor removido com sucesso";
+                reply.message = "Comentário removido com sucesso";
             }
             else {
                 //ações em caso de erro
@@ -173,7 +172,7 @@ export async function Obtain(id) {
         cache: 'no-store'
     };
 
-    const url = process.env.API_URL + "/reader/" + id;
+    const url = process.env.API_URL + "/comment/" + id;
 
     let reply = {
         success: undefined,
@@ -214,6 +213,7 @@ export async function Obtain(id) {
         reply.status = false;
         reply.message = ex.message;
     });
+
     return reply;
 }
 
@@ -226,11 +226,10 @@ export async function Update(data) {
             'Content-Type': 'application/json',
             'x-api-key': process.env.API_KEY
         },
-        body: JSON.stringify(data),
-        cache: 'no-store'
+        body: JSON.stringify(data)
     };
 
-    const url = process.env.API_URL + "/reader/" + data.id;
+    const url = process.env.API_URL + "/comment/" + data.id;
 
     let reply = {
         success: undefined,
@@ -242,7 +241,7 @@ export async function Update(data) {
             if (result.status == 200) {
                 //ações em caso de sucesso
                 reply.success = true;
-                reply.message = resultData;
+                reply.message = "Comentário salvo com sucesso";
             }
             else {
                 //ações em caso de erro
