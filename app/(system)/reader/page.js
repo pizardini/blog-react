@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import { Button, Spinner, Table } from "flowbite-react";
 import { List } from "./api";
 import { toast } from "react-toastify";
-// import RemoveAuthor from "./remove";
-// import EditAuthor from "./update";
+import RemoveReader from "./remove";
+import EditReader from "./update";
 
 export default function Reader() {
 
@@ -49,10 +49,10 @@ export default function Reader() {
     let modal = null;
 
     if (operation.action === "edit") {
-        modal = <EditAuthor id={operation.id}/>
+        modal = <EditReader id={operation.id}/>
     }
     else if (operation.action === "delete") {
-        modal = <RemoveAuthor id={operation.id}/>
+        modal = <RemoveReader id={operation.id}/>
     }
 
     const closeModals = () => {
@@ -70,12 +70,11 @@ export default function Reader() {
 
     return(
         <>
-            <p className="text-2xl">Autores</p>
-            <p className="text-sm">Aqui serão listados os autores cadastrados no sistema</p>
-            <AuthorContext.Provider value={{update: setUpdate, close: closeModals}}>
-                <NewAuthor />
+            <p className="text-2xl">Leitores</p>
+            <ReaderContext.Provider value={{update: setUpdate, close: closeModals}}>
+                <NewReader />
                 {modal}
-            </AuthorContext.Provider>
+            </ReaderContext.Provider>
 
             {busy && <Spinner />}
             {busy || <div className="mt-2">

@@ -24,7 +24,7 @@ export async function Insert(data) {
             if (result.status == 200) {
                 //ações em caso de sucesso
                 reply.success = true;
-                reply.message = "salvo com sucesso";
+                reply.message = "Salvo com sucesso";
             }
             else {
                 //ações em caso de erro
@@ -130,6 +130,7 @@ export async function Remove(id) {
         result.text().then((resultData) => {
             if (result.status == 200) {
                 //ações em caso de sucesso
+                console.log("teste")
                 reply.success = true;
                 reply.message = "Leitor removido com sucesso";
             }
@@ -230,7 +231,6 @@ export async function Update(data) {
     };
 
     const url = process.env.API_URL + "/reader/" + data.id;
-    console.log(url);
 
     let reply = {
         success: undefined,

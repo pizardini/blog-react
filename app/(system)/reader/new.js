@@ -26,7 +26,6 @@ export default function NewReader() {
     const { control, register, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
             name: '',
-            nickname: '',
             email: '',
             birthDate: '',
             password: '',
@@ -61,12 +60,11 @@ export default function NewReader() {
     const closeModal = () => {
         reset({
             name: '',
-            nickname: '',
             email: '',
             birthDate: new Date(),
             password: '',
             // token: '',
-            active: 'true'
+            active: ''
         })
         setModalOpen(false);
     }
@@ -86,11 +84,6 @@ export default function NewReader() {
                             <Label htmlFor="name">Nome</Label>
                             <TextInput id="name" placeholder="Informe o nome do autor" {...register("name")} />
                             <span className="text-sm text-red-600">{errors?.name?.message}</span>
-                        </div>
-                        <div className="mb-2">
-                            <Label htmlFor="nickname">Apelido</Label>
-                            <TextInput id="nickname" placeholder="Informe o apelido" {...register("nickname")} />
-                            <span className="text-sm text-red-600">{errors?.nickname?.message}</span>
                         </div>
                         <div className="mb-2">
                             <Label htmlFor="email">E-mail</Label>
