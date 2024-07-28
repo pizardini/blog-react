@@ -12,7 +12,7 @@ export async function Insert(data) {
         body: JSON.stringify(data)
     };
 
-    const url = process.env.API_URL + "/news";
+    const url = process.env.API_URL + "/reader";
 
     let reply = {
         success: undefined,
@@ -24,7 +24,7 @@ export async function Insert(data) {
             if (result.status == 200) {
                 //ações em caso de sucesso
                 reply.success = true;
-                reply.message = "Notícia salva com sucesso";
+                reply.message = "salvo com sucesso";
             }
             else {
                 //ações em caso de erro
@@ -59,18 +59,18 @@ export async function Insert(data) {
 export async function List() {
     const args = {
         method: 'GET',
+        cache: 'no-cache',
         headers: {
             'x-api-key': process.env.API_KEY
-        },
-        cache: 'no-store'
+        }
     };
 
-    const url = process.env.API_URL + "/news";
+    const url = process.env.API_URL + "/reader";
 
     let reply = {
         success: undefined,
         message: '',
-        data: null,
+        data: null
     };
 
     await fetch(url, args).then((result) => {
@@ -119,7 +119,7 @@ export async function Remove(id) {
         }
     };
 
-    const url = process.env.API_URL + "/news/" + id;
+    const url = process.env.API_URL + "/reader/" + id;
 
     let reply = {
         success: undefined,
@@ -131,7 +131,7 @@ export async function Remove(id) {
             if (result.status == 200) {
                 //ações em caso de sucesso
                 reply.success = true;
-                reply.message = "Notícia removida com sucesso";
+                reply.message = "Leitor removido com sucesso";
             }
             else {
                 //ações em caso de erro
@@ -172,7 +172,7 @@ export async function Obtain(id) {
         cache: 'no-store'
     };
 
-    const url = process.env.API_URL + "/news/" + id;
+    const url = process.env.API_URL + "/reader/" + id;
 
     let reply = {
         success: undefined,
@@ -213,7 +213,6 @@ export async function Obtain(id) {
         reply.status = false;
         reply.message = ex.message;
     });
-
     return reply;
 }
 
@@ -226,10 +225,12 @@ export async function Update(data) {
             'Content-Type': 'application/json',
             'x-api-key': process.env.API_KEY
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        cache: 'no-store'
     };
 
-    const url = process.env.API_URL + "/news/" + data.id;
+    const url = process.env.API_URL + "/reader/" + data.id;
+    console.log(url);
 
     let reply = {
         success: undefined,
@@ -241,7 +242,7 @@ export async function Update(data) {
             if (result.status == 200) {
                 //ações em caso de sucesso
                 reply.success = true;
-                reply.message = "Notícia salva com sucesso";
+                reply.message = resultData;
             }
             else {
                 //ações em caso de erro

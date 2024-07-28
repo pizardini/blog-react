@@ -5,8 +5,8 @@ import { NewsContext } from "./context";
 import NewNews from "./new";
 import { Button, Spinner, Table } from "flowbite-react";
 import { List } from "./api";
-// import RemoveNews from "./remove";
-// import EditNews from "./update";
+import RemoveNews from "./remove";
+import EditNews from "./update";
 
 
 export default function News() {
@@ -49,12 +49,10 @@ export default function News() {
     let modal = null;
 
     if (operation.action === "edit") {
-        // modal = <EditAuthor id={operation.id}/>
-        console.log("editar")
+        modal = <EditNews id={operation.id}/>
     }
     else if (operation.action === "delete") {
-        // modal = <RemoveAuthor id={operation.id}/>
-        console.log("remover")
+        modal = <RemoveNews id={operation.id}/>
     }
 
     const closeModals = () => {
