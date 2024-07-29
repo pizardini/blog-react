@@ -9,7 +9,8 @@ import { commentSchema } from "./schema";
 import { CommentContext } from "./context";
 import { toast } from "react-toastify";
 import { Obtain, Update } from "./api";
-import { List } from "../author/api";
+import { ListReaders } from "../reader/api";
+import { List } from "../news/api";
 
 export default function EditComment({ id }) {
     const [modalOpen, setModalOpen] = useState(true);
@@ -18,26 +19,36 @@ export default function EditComment({ id }) {
 
     const { register, handleSubmit, reset, formState: { errors }, setValue } = useForm({
         defaultValues: {
-            headline: '',
-            subhead: '',
-            text: '',
-            publicationDateTime: '',
-            lastUpdate: '',
-            authorId: '',
-            published: '',
+            readerId: '',
+            newsId: '',
+            content: '',
+            datePublished: '',
         },
-        resolver: yupResolver(commentSchema),
+        // resolver: yupResolver(commentSchema),
     });
 
     const fallbackContext = useContext(CommentContext);
 
+    const [readersList, setReadersList] = useState(null);
     const [newsList, setNewsList] = useState(null);
-
+    
     const updateListReaders = async () => {
-        const result = await List();
+        const result = await ListReaders();
         if (result.success && result.data !== null && result.data.length > 0) {
             let grid = result.data.map((p) =>
                 <option key={p.id} value={p.id}>{p.name}</option>
+            )
+
+            grid.unshift(<option key={0} value=''>[Escolha]</option>)
+            setReadersList(grid);
+        }
+    }
+
+    const updateListNews = async () => {
+        const result = await List();
+        if (result.success && result.data !== null && result.data.length > 0) {
+            let grid = result.data.map((p) =>
+                <option key={p.id} value={p.id}>{p.headline}</option>
             )
 
             grid.unshift(<option key={0} value=''>[Escolha]</option>)
@@ -48,6 +59,7 @@ export default function EditComment({ id }) {
     useEffect(() => {
         if (modalOpen) {
             updateListReaders();
+            updateListNews();
         }
     }, [modalOpen])
 
@@ -55,7 +67,6 @@ export default function EditComment({ id }) {
         setBusy(busy => true);
         data.id = id;
         const result = await Update(data);
-
         if (result.success) {
             closeModal();
             fallbackContext.update(true);
@@ -73,16 +84,12 @@ export default function EditComment({ id }) {
 
     const closeModal = () => {
         reset({
-            headline: '',
-            subhead: '',
-            text: '',
-            publicationDateTime: new Date(),
-            lastUpdate: new Date(),
-            authorId: '',
-            published: null,
+            readerId: '',
+            newsId: '',
+            content: '',
+            datePublished: new Date(),
         })
         setModalOpen(false);
-        fallbackContext.close();
     }
 
     const getData = async () => {
@@ -94,17 +101,14 @@ export default function EditComment({ id }) {
             if (result.message !== '')
                 toast.success(result.message);
                 
-            let input = result.data.publicationDateTime;
+            let input = result.data.datePublished;
             let dateTime = new Date(input);
             let formattedDate = dateTime.toISOString().split('T')[0];
             reset({ 
-                headline: result.data.headline,
-                subhead: result.data.subhead,
-                text: result.data.text,
-                publicationDateTime: formattedDate,
-                lastUpdate: result.data.lastUpdate,
-                authorId: result.data.authorId,
-                published: result.data.published,
+                readerId: result.data.readerId,
+                newsId: result.data.newsId,
+                content: result.data.content,
+                datePublished: formattedDate,
             });
         }
         else {
@@ -129,52 +133,32 @@ export default function EditComment({ id }) {
     return (
             <Modal show={modalOpen} onClose={closeModal}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <Modal.Header>Edição de Notícia</Modal.Header>
+                    <Modal.Header>Novo Comentário</Modal.Header>
                     <Modal.Body>
                         <div className="mb-2">
-                            <Label htmlFor="headline">Título</Label>
-                            <TextInput id="headline" placeholder="Informe o título" {...register("headline")} />
-                            <span className="text-sm text-red-600">{errors?.headline?.message}</span>
+                            <Label htmlFor="reader">Leitor</Label>
+                            <Select id="reader" {...register("readerId")}>
+                                {readersList}
+                            </Select>
+                            <span className="text-sm text-red-600">{errors?.readerId?.message}</span>
                         </div>
                         <div className="mb-2">
-                            <Label htmlFor="subhead">Subtítulo</Label>
-                            <TextInput id="subhead" placeholder="Informe o subtítulo" {...register("subhead")} />
-                            <span className="text-sm text-red-600">{errors?.subhead?.message}</span>
-                        </div>
-                        <div className="mb-2">
-                            <Label htmlFor="text">Corpo da notícia</Label>
-                            <Textarea id="text" placeholder="Informe o corpo da notícia" {...register("text")} />
-                            <span className="text-sm text-red-600">{errors?.text?.message}</span>
-                        </div>
-                        <div className="mb-2">
-                            <Label htmlFor="author">Autor</Label>
-                            <Select id="author" {...register("authorId")}>
+                            <Label htmlFor="news">Notícia</Label>
+                            <Select id="news" {...register("newsId")}>
                                 {newsList}
                             </Select>
-                            <span className="text-sm text-red-600">{errors?.authorId?.message}</span>
+                            <span className="text-sm text-red-600">{errors?.newsId?.message}</span>
                         </div>
                         <div className="mb-2">
-                            <Label htmlFor="publicationDateTime">Data de Publicação</Label>
-                            <TextInput id="publicationDateTime" type="date" {...register("publicationDateTime")}/>
-                            <span className="text-sm text-red-600">{errors?.publicationDateTime?.message}</span>
+                            <Label htmlFor="content">Comentário</Label>
+                            <Textarea id="content" placeholder="Informe o conteúdo do comentário" {...register("content")} />
+                            <span className="text-sm text-red-600">{errors?.content?.message}</span>
                         </div>
                         <div className="mb-2">
-                            <Label htmlFor="lastUpdate">Última alteração</Label>
-                            <TextInput id="lastUpdate" type="datetime-local" {...register("lastUpdate")}/>
-                            <span className="text-sm text-red-600">{errors?.lastUpdate?.message}</span>
+                            <Label htmlFor="datePublished">Última alteração</Label>
+                            <TextInput id="datePublished" type="date" {...register("datePublished")}/>
+                            <span className="text-sm text-red-600">{errors?.datePublished?.message}</span>
                         </div>
-                        <fieldset className="flex max-w-md flex-col gap-4">
-                            <Label htmlFor="published">Status</Label>
-                            <div className="flex items-center gap-2">
-                                <Radio id="active" {...register("published")} type="radio" value="true" />
-                                <Label htmlFor="active">Publicado</Label>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <Radio id="inactive" {...register("published")} type="radio" value="false" />
-                                <Label htmlFor="inactive">Não Publicado</Label>
-                            </div>
-                            <span className="text-sm text-red-600">{errors?.active?.message}</span>
-                        </fieldset>
                     </Modal.Body>
                     <Modal.Footer className="justify-end">
                         <Button size="sm" type="submit" isProcessing={busy} disabled={busy}>
