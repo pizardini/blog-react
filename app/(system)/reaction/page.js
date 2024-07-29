@@ -1,7 +1,99 @@
+'use client'
+
+import NewReaction from "./new";
+import { ReactionContext } from "./context";
+import { useEffect, useState } from "react";
+import { Button, Spinner, Table } from "flowbite-react";
+import { List } from "./api";
+import { toast } from "react-toastify";
+import RemoveReaction from "./remove";
+import EditReaction from "./update";
+
 export default function Reaction() {
+
+    const [update, setUpdate] = useState(true);
+    const [data, setData] = useState(null);
+    const [busy, setBusy] = useState(true);
+    const [operation, setOperation] = useState({ id: null, action: null });
+
+    const updateList = async () => {
+
+        setBusy(p => true);
+        const result = await List();
+
+    if (result.success && result.data !== null) {
+        let grid = result.data.map((p) =>
+            <Table.Row key={p.id}>
+                <Table.Cell>{p.type}</Table.Cell>
+                <Table.Cell>
+                <Button size="sm" onClick={() => { setOperation({ id: p.id, action: 'edit' }) }}>Editar</Button>
+                </Table.Cell>
+                <Table.Cell>
+                <Button size="sm" color="failure" onClick={() => { setOperation({ id: p.id, action: 'delete' }) }}>Remover</Button>
+                </Table.Cell>
+            </Table.Row>
+        );
+        setData(grid);
+
+        if (result.message !== '')
+            toast.success(result.message);
+    }
+    else {
+        setData(null);
+        if (result.message !== '')
+            toast.error(result.message);
+        }
+        setBusy(p => false);
+    }
+
+    let modal = null;
+
+    if (operation.action === "edit") {
+        modal = <EditReaction id={operation.id}/>
+    }
+    else if (operation.action === "delete") {
+        modal = <RemoveReaction id={operation.id}/>
+    }
+
+    const closeModals = () => {
+        setOperation({ id: null, action: null})
+    }
+
+    useEffect(() => {
+        if (update === null) 
+            setUpdate(true);
+        else if (update) {
+            updateList();
+            setUpdate(p => false);
+        }
+    }, [update])
+
     return(
         <>
-            Reações aqui
+            <p className="text-2xl">Reações</p>
+            <ReactionContext.Provider value={{update: setUpdate, close: closeModals}}>
+                <NewReaction />
+                {modal}
+            </ReactionContext.Provider>
+
+            {busy && <Spinner />}
+            {busy || <div className="mt-2">
+                <Table hoverable>
+                    <Table.Head>
+                        <Table.HeadCell>Tipo</Table.HeadCell>
+                        <Table.HeadCell>
+                            <span>&nbsp;</span>
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            <span>&nbsp;</span>
+                        </Table.HeadCell>
+                    </Table.Head>
+                    <Table.Body>
+                        {data}
+                    </Table.Body>
+                </Table>
+            </div>
+            }
         </>
     )
 }
