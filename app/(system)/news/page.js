@@ -71,7 +71,6 @@ export default function News() {
     return(
         <>
             <p className="text-2xl">Notícias</p>
-            <p className="text-sm">Aqui serão listadas as notícias</p>
             <NewsContext.Provider value={{update: setUpdate, close: closeModals}}>
                 <NewNews />
                 {modal}

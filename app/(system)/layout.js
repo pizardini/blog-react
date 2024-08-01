@@ -5,10 +5,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { logout } from "../login/actions";
 
 export default function Layout({ children }) {
 
     const route = usePathname();
+
+    const handleSair = async () => {
+        await logout();
+    }
 
     return (
         <>
@@ -20,10 +25,12 @@ export default function Layout({ children }) {
                     <div className="flex md:order-2">
                         <Dropdown arrowIcon={false} inline label={<Avatar rounded />}>
                             <DropdownHeader>
-                                <span className="block text-sm">Usuário</span>
-                                <span className="block truncate text-sm font-medium">usuario@email.com</span>
+                                {/* <span className="block text-sm">{usuario.nome}</span>
+                                <span className="block truncate text-sm font-medium">{usuario.email}</span> */}
+                                <span className="block text-sm">nome</span>
+                                <span className="block truncate text-sm font-medium">email</span>
                             </DropdownHeader>
-                            <DropdownItem>Sair</DropdownItem>
+                            <DropdownItem onClick={handleSair}>Sair</DropdownItem>
                         </Dropdown>
                         <NavbarToggle />
                     </div>
