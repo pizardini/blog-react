@@ -36,7 +36,6 @@ export default function NewUser() {
     const onSubmit = async (data) => {
         setBusy(busy => true);
         data.active = data.active === "true" || data.active === true;
-        console.log(data);
         data.password = createSHA256Hash(data.password + 'khadfhyf388');
         const resultado = await Insert(data);
         if (resultado.success) {

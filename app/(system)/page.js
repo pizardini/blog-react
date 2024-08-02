@@ -5,8 +5,11 @@ import { toast } from "react-toastify"
 import { Button, Timeline } from "flowbite-react";
 import { HiArrowNarrowRight } from "react-icons/hi";
 import { List } from "./news/api";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export default function Home() {
+    const route = usePathname();
 
     const [update, setUpdate] = useState(true);
     const [data, setData] = useState(null);
@@ -35,10 +38,16 @@ export default function Home() {
                         <Timeline.Point />
                         <Timeline.Content>
                             <Timeline.Time>{publicationDateTime}</Timeline.Time>
-                            <Timeline.Title>{p.headline}</Timeline.Title>
+                            <Timeline.Title style={{ color: 'black' }}>{p.headline}</Timeline.Title>
                             <Timeline.Body>
-                                {p.text}
+                                {p.subhead}
                             </Timeline.Body>
+                            {/* <Button as={Link} href={`/news/${p.id}`} color="gray"> */}
+                            {/* <Button as={Link} href={`/news/${p.id}`} active={route === `/news/${p.id}`} color="gray" id={p.id}> */}
+                            <Button as={Link} href={`/news/${p.id}`} color="gray" id={p.id}>
+                            Detalhes
+                            <HiArrowNarrowRight className="ml-2 h-3 w-3" />
+                            </Button>
                         </Timeline.Content>
                     </Timeline.Item>
                 );

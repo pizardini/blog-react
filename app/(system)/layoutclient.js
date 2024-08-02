@@ -12,8 +12,6 @@ export default function LayoutClient({ children, usuario }) {
 
     const route = usePathname();
 
-    console.log(usuario)
-
     const handleSair = async () => {
         await logout();
     }

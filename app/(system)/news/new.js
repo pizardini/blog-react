@@ -53,7 +53,6 @@ export default function NewNews() {
     const onSubmit = async (data) => {
 
         setBusy(busy => true);
-        console.log(data);
         const result = await Insert(data);
 
         if (result.success) {
