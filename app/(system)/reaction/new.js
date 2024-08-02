@@ -63,7 +63,7 @@ export default function NewReaction() {
 
     const onSubmit = async (data) => {
         setBusy(busy => true);
-
+        
         const result = await Insert(data);
 
         if (result.success) {
