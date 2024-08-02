@@ -29,7 +29,6 @@ export default function NewReader() {
             email: '',
             birthDate: '',
             password: '',
-            // token: '',
             active: 'true'
         },
         resolver: yupResolver(readerSchema),
@@ -63,7 +62,6 @@ export default function NewReader() {
             email: '',
             birthDate: new Date(),
             password: '',
-            // token: '',
             active: ''
         })
         setModalOpen(false);
@@ -98,8 +96,6 @@ export default function NewReader() {
                         <div className="mb-2">
                             <Label htmlFor="password">Password</Label>
                             <TextInput id="password" type="password" {...register("password")}/>
-                            {/* <TextInput id="password" {...register("password")} value={password} onChange={(e) => setPassword(e.target.value)}/> */}
-                            {/* <Button type="button" className="ml-2 px-3 py-1 bg-blue-500 text-white rounded-md" onClick={randomPass}>Gerar</Button> */}
                             <span className="text-sm text-red-600">{errors?.password?.message}</span>
                         </div>
                         <fieldset className="flex max-w-md flex-col gap-4">

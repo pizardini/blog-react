@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Label, Modal, Select, TextInput, Textarea } from "flowbite-react"
 import { toast } from "react-toastify";
 import { Insert } from "../(system)/reader/api";
+import { HiMail } from "react-icons/hi";
 
 const crypto = require('crypto');
 
@@ -25,14 +26,17 @@ export default function NewUser() {
         defaultValues: {
             name: '',
             email: '',
-            password: ''
+            birthDate: '',
+            password: '',
+            active: false
         },
         // resolver: yupResolver(newUserSchema),
     });
 
     const onSubmit = async (data) => {
         setBusy(busy => true);
-
+        data.active = data.active === "true" || data.active === true;
+        console.log(data);
         data.password = createSHA256Hash(data.password + 'khadfhyf388');
         const resultado = await Insert(data);
         if (resultado.success) {
@@ -53,7 +57,9 @@ export default function NewUser() {
         reset({
             name: '',
             email: '',
-            password: ''
+            birthDate: new Date(),
+            password: '',
+            active: false
         })
         setModalOpen(false);
     }
@@ -66,19 +72,24 @@ export default function NewUser() {
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Modal.Header>Novo Usuário</Modal.Header>
                     <Modal.Body>
-                        <div className="mb-2">
+                    <div className="mb-2">
                             <Label htmlFor="name">Nome</Label>
-                            <TextInput id="name" placeholder="Informe o nome do usuário" {...register("name")} />
+                            <TextInput id="name" placeholder="Informe o nome do autor" {...register("name")} />
                             <span className="text-sm text-red-600">{errors?.name?.message}</span>
                         </div>
                         <div className="mb-2">
                             <Label htmlFor="email">E-mail</Label>
-                            <TextInput id="email" placeholder="Informe o e-mail do usuário" {...register("email")} />
+                            <TextInput id="email" icon={HiMail} placeholder="Informe o e-mail" {...register("email")} required/>
                             <span className="text-sm text-red-600">{errors?.email?.message}</span>
                         </div>
                         <div className="mb-2">
-                            <Label htmlFor="senha">Senha</Label>
-                            <TextInput id="senha" type="password" placeholder="Informe a senha do usuário" {...register("password")} />
+                            <Label htmlFor="birthDate">Data de Nascimento</Label>
+                            <TextInput id="birthDate" type="date" {...register("birthDate")}/>
+                            <span className="text-sm text-red-600">{errors?.birthDate?.message}</span>
+                        </div>
+                        <div className="mb-2">
+                            <Label htmlFor="password">Password</Label>
+                            <TextInput id="password" type="password" {...register("password")}/>
                             <span className="text-sm text-red-600">{errors?.password?.message}</span>
                         </div>
                     </Modal.Body>

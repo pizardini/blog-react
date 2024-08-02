@@ -9,7 +9,6 @@ export const { auth, signIn, signOut } = NextAuth({
         Credentials({
 
             async authorize(credentials) {
-
                 const resultado = await Autenticar(credentials);
                 if(resultado.success) {
                     return resultado.data;

@@ -12,6 +12,8 @@ export default function LayoutClient({ children, usuario }) {
 
     const route = usePathname();
 
+    console.log(usuario)
+
     const handleSair = async () => {
         await logout();
     }
@@ -28,6 +30,7 @@ export default function LayoutClient({ children, usuario }) {
                             <DropdownHeader>
                                 <span className="block text-sm">{usuario.nome}</span>
                                 <span className="block truncate text-sm font-medium">{usuario.email}</span>
+                                <span className="block text-sm">role {usuario.type}</span>
                             </DropdownHeader>
                             <DropdownItem onClick={handleSair}>Sair</DropdownItem>
                         </Dropdown>
