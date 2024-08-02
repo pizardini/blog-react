@@ -6,7 +6,7 @@ import { newUserSchema } from "./schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Label, Modal, Select, TextInput, Textarea } from "flowbite-react"
 import { toast } from "react-toastify";
-import { Inserir } from "./api";
+import { Insert } from "../(system)/reader/api";
 
 const crypto = require('crypto');
 
@@ -34,8 +34,7 @@ export default function NewUser() {
         setBusy(busy => true);
 
         data.password = createSHA256Hash(data.password + 'khadfhyf388');
-        const resultado = await Inserir(data);
-
+        const resultado = await Insert(data);
         if (resultado.success) {
             closeModal();
 
@@ -82,15 +81,6 @@ export default function NewUser() {
                             <TextInput id="senha" type="password" placeholder="Informe a senha do usuário" {...register("password")} />
                             <span className="text-sm text-red-600">{errors?.password?.message}</span>
                         </div>
-                        {/* <div className="mb-2">
-                            <Label htmlFor="tipo">Tipo de usuário</Label>
-                            <Select id="tipo" {...register("tipo")}>
-                                <option value='' key={0} disabled label="<Escolha>" />
-                                <option value='1' key={1} label="Administrador" />
-                                <option value='2' key={2} label="Padrão" />
-                            </Select>
-                            <span className="text-sm text-red-600">{errors?.tipo?.message}</span>
-                        </div> */}
                     </Modal.Body>
                     <Modal.Footer className="justify-end">
                         <Button size="sm" type="submit" isProcessing={busy} disabled={busy}>

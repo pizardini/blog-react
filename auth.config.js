@@ -1,3 +1,8 @@
+import { Obter } from "./app/login/api";
+
+const adminPaths = ['/author', '/reader', '/news'];
+const authorPaths = ['/news'];
+
 export const authConfig = {
     pages: {
         signIn: '/login',
@@ -14,8 +19,30 @@ export const authConfig = {
             if (nextUrl.pathname.startsWith('/login'))
                 return Response.redirect(new URL('/', nextUrl));
 
+            if (nextUrl.pathname.startsWith(adminPaths)) {
+                if (auth.user.type == 0)
+                    return true;
+                else
+                    return false;
+            }
+
+            if (nextUrl.pathname.startsWith(authorPaths)) {
+                if (auth.user.type == 0 || auth.user.type == 1)
+                    return true;
+                else
+                    return false;
+            }
+
             //Retorna verdadeiro para todos os outros casos
             return true;
+        },
+
+        async session({ session }) {
+            const user = await Obter(session.user);
+            session.user.type = user.data.type;
+            session.user.active = user.data.active;
+            session.user.id = user.data.id;
+            return session;
         }
     },
     providers: []

@@ -130,7 +130,6 @@ export async function Remove(id) {
         result.text().then((resultData) => {
             if (result.status == 200) {
                 //ações em caso de sucesso
-                console.log("teste")
                 reply.success = true;
                 reply.message = "Leitor removido com sucesso";
             }

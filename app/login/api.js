@@ -1,6 +1,6 @@
 'use server'
 
-export async function Inserir(data) {
+export async function InserirAdm(data) {
     const args = {
         method: 'POST',
         headers: {
@@ -24,7 +24,64 @@ export async function Inserir(data) {
             if (result.status == 200) {
                 //ações em caso de sucesso
                 retorno.success = true;
-                retorno.message = "Usuário salvo com sucesso";
+                retorno.message = "Administrador salvo com sucesso";
+            }
+            else {
+                //ações em caso de erro
+                let errorMessage = '';
+                if (resultData.errors != null) {
+                    const totalErros = Object.keys(resultData.errors).length;
+
+                    for (let i = 0; i < totalErros; i++) {
+                        errorMessage = errorMessage + Object.values(resultData.errors)[i];
+                    }
+                }
+                else
+                    errorMessage = resultData;
+
+                retorno.status = false;
+                retorno.message = errorMessage;
+            }
+        }).catch((ex) => {
+            //erro na conversão para Json
+            retorno.status = false;
+            retorno.message = 'Dados inválidos';
+        })
+    }).catch((ex) => {
+        //erro geral
+        console.log(ex);
+        retorno.status = false;
+        retorno.message = ex.message;
+    });
+
+    return retorno;
+}
+
+export async function InserirReader(data) {
+    const args = {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'x-api-key': process.env.API_KEY
+        },
+        body: JSON.stringify(data)
+    };
+
+    const url = process.env.API_URL + "/reader";
+    console.log(url);
+
+    let retorno = {
+        success: undefined,
+        message: ''
+    };
+
+    await fetch(url, args).then(async (result) => {
+        await result.json().then((resultData) => {
+            if (result.status == 200) {
+                //ações em caso de sucesso
+                retorno.success = true;
+                retorno.message = "Administrador salvo com sucesso";
             }
             else {
                 //ações em caso de erro
@@ -86,7 +143,6 @@ export async function Autenticar(data) {
                 retorno.message = '';
                 resultData.name = resultData.name; //pra armazenar no cookie
                 retorno.data = resultData;
-                console.log("retorno: "+retorno)
             }
             else {
                 //ações em caso de erro
@@ -126,7 +182,7 @@ export async function Obter(data) {
         }
     };
 
-    const url = process.env.API_URL + "/admin/obterporemail/" + data.email;
+    const url = process.env.API_URL + "/user/obterporemail/" + data.email;
 
     let retorno = {
         success: undefined,
@@ -167,7 +223,6 @@ export async function Obter(data) {
         retorno.status = false;
         retorno.message = ex.message;
     });
-
     return retorno;
 }
 
@@ -179,7 +234,7 @@ export async function noAdmin() {
         }
     };
 
-    const url = process.env.API_URL + "/admin/exists/";
+    const url = process.env.API_URL + "/user/exists/";
 
     let retorno = {
         success: undefined,
@@ -219,6 +274,5 @@ export async function noAdmin() {
         retorno.status = false;
         retorno.message = ex.message;
     });
-
     return retorno;
 }

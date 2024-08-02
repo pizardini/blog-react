@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast } from "react-toastify";
 import NewUser from "./new";
 import { login } from "./actions";
+import NewAdmin from "./admin";
 
 const crypto = require('crypto');
 
@@ -33,7 +34,6 @@ export default function Login() {
     
     const onSubmit = async (data) => {
         data.password = createSHA256Hash(data.password + 'khadfhyf388');
-        console.log(data)
         //requisição à API
         const resultado = await login(data);
         if(resultado && resultado !== ''){
@@ -69,6 +69,7 @@ export default function Login() {
                                 </div>
                                 <div className="mt-4">
                                     <NewUser />
+                                    <NewAdmin />
                                 </div>
                             </div>
                         </form>

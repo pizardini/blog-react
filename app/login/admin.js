@@ -1,12 +1,12 @@
 'use client'
 
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { novoAdminSchema } from "./schema";
+import { newUserSchema } from "./schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Label, Modal, Select, TextInput, Textarea } from "flowbite-react"
 import { toast } from "react-toastify";
-import { Inserir, InserirAdmin } from "./api";
+import { InserirAdm } from "./api";
 import { existsAdm } from "./actions";
 
 
@@ -30,17 +30,13 @@ export default function NewAdmin() {
             email: '',
             password: ''
         },
-        resolver: yupResolver(newUserSchema),
+        // resolver: yupResolver(newUserSchema),
     });
 
-    const atualizarLista = async () => {
+    const updateList = async () => {
         const resultado = await existsAdm();
-        console.log(resultado);
         if (resultado.success && resultado.data !== null) {
-            console.log(resultado.data.existe);
-            if (resultado.data.existe === false) {
-                console.log('redirecionando');
-                
+            if (resultado.data.exist === false) {
                  setModalOpen(true);
             }
         } else {
@@ -57,18 +53,14 @@ export default function NewAdmin() {
 
         if (primeiroAcesso) {
             setPrimeiroAcesso(false);
-            atualizarLista();
-            
-
+            updateList();
         }
     }, [primeiroAcesso]);
 
     const onSubmit = async (data) => {
         setBusy(busy => true);
-        
-        data.senha = createSHA256Hash(data.senha + 'khadfhyf388');
-        
-        const resultado = await InserirAdmin(data);
+        data.password = createSHA256Hash(data.password + 'khadfhyf388');
+        const resultado = await InserirAdm(data);
 
         if (resultado.success) {
             closeModal();
@@ -112,10 +104,9 @@ export default function NewAdmin() {
                         </div>
                         <div className="mb-2">
                             <Label htmlFor="senha">Senha</Label>
-                            <TextInput id="senha" type="password" placeholder="Informe a senha do usuário" {...register("senha")} />
-                            <span className="text-sm text-red-600">{errors?.senha?.message}</span>
+                            <TextInput id="senha" type="password" placeholder="Informe a senha do usuário" {...register("password")} />
+                            <span className="text-sm text-red-600">{errors?.password?.message}</span>
                         </div>
-                        
                     </Modal.Body>
                     <Modal.Footer className="justify-end">
                         <Button size="sm" type="submit" isProcessing={busy} disabled={busy}>
