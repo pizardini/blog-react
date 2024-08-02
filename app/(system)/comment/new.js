@@ -21,7 +21,7 @@ export default function NewComment() {
             readerId: '',
             newsId: '',
             content: '',
-            datePublished: '',
+            datePublished: new Date(),
         },
         // resolver: yupResolver(commentSchema),
     });
@@ -64,7 +64,6 @@ export default function NewComment() {
 
     const onSubmit = async (data) => {
         setBusy(busy => true);
-
         const result = await Insert(data);
         if (result.success) {
             closeModal();
@@ -120,11 +119,6 @@ export default function NewComment() {
                             <Label htmlFor="content">Comentário</Label>
                             <Textarea id="content" placeholder="Informe o conteúdo do comentário" {...register("content")} />
                             <span className="text-sm text-red-600">{errors?.content?.message}</span>
-                        </div>
-                        <div className="mb-2">
-                            <Label htmlFor="datePublished">Última alteração</Label>
-                            <TextInput id="datePublished" type="date" {...register("datePublished")}/>
-                            <span className="text-sm text-red-600">{errors?.datePublished?.message}</span>
                         </div>
                     </Modal.Body>
                     <Modal.Footer className="justify-end">

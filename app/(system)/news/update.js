@@ -153,16 +153,6 @@ export default function EditNews({ id }) {
                             </Select>
                             <span className="text-sm text-red-600">{errors?.authorId?.message}</span>
                         </div>
-                        <div className="mb-2">
-                            <Label htmlFor="publicationDateTime">Data de Publicação</Label>
-                            <TextInput id="publicationDateTime" type="date" {...register("publicationDateTime")}/>
-                            <span className="text-sm text-red-600">{errors?.publicationDateTime?.message}</span>
-                        </div>
-                        <div className="mb-2">
-                            <Label htmlFor="lastUpdate">Última alteração</Label>
-                            <TextInput id="lastUpdate" type="datetime-local" {...register("lastUpdate")}/>
-                            <span className="text-sm text-red-600">{errors?.lastUpdate?.message}</span>
-                        </div>
                         <fieldset className="flex max-w-md flex-col gap-4">
                             <Label htmlFor="published">Status</Label>
                             <div className="flex items-center gap-2">

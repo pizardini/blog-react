@@ -1,33 +1,29 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify"
 import { Button, Timeline } from "flowbite-react";
 import { HiArrowNarrowRight } from "react-icons/hi";
-import { List } from "./news/api";
-import { usePathname } from "next/navigation";
+import { Feed } from "./news/api";
 import Link from "next/link";
 
 export default function Home() {
-    const route = usePathname();
 
     const [update, setUpdate] = useState(true);
     const [data, setData] = useState(null);
 
     const updateList = async () => {
-        const result = await List();
-    
-    const adjustToGMT3 = (dateString) => {
-        const date = new Date(dateString);
-        const offset = -3; // GMT-3
-        date.setHours(date.getHours() + offset);
-        return date.toLocaleString('pt-BR', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-        });
+        const result = await Feed();
+        const adjustToGMT3 = (dateString) => {
+            const date = new Date(dateString);
+            const offset = -3; // GMT-3
+            date.setHours(date.getHours() + offset);
+            return date.toLocaleString('pt-BR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+            });
     };
 
         if (result.success && result.data !== null) {
@@ -37,8 +33,8 @@ export default function Home() {
                     <Timeline.Item key={p.id}>
                         <Timeline.Point />
                         <Timeline.Content>
-                            <Timeline.Time>{publicationDateTime}</Timeline.Time>
-                            <Timeline.Title style={{ color: 'black' }}>{p.headline}</Timeline.Title>
+                            <div><Timeline.Time>{publicationDateTime}</Timeline.Time></div>
+                            <Timeline.Title as={Link} href={`/news/${p.id}`} color="gray" id={p.id} style={{ color: 'black' }}>{p.headline}</Timeline.Title>
                             <Timeline.Body>
                                 {p.subhead}
                             </Timeline.Body>
