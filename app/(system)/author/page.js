@@ -71,7 +71,6 @@ export default function Author() {
     return(
         <>
             <p className="text-2xl">Autores</p>
-            <p className="text-sm">Aqui serão listados os autores cadastrados no sistema</p>
             <AuthorContext.Provider value={{update: setUpdate, close: closeModals}}>
                 <NewAuthor />
                 {modal}

@@ -19,8 +19,7 @@ export default function NewAuthor() {
 
     const randomPass = () => {
         const newPass = Math.random().toString(36).slice(-8); // Gera uma senha aleatória
-        setPassword(newPass);
-        setValue("password", newPass);
+        return newPass
       }
 
     const { control, register, handleSubmit, reset, formState: { errors } } = useForm({
@@ -30,7 +29,6 @@ export default function NewAuthor() {
             email: '',
             birthDate: '',
             password: '',
-            // token: '',
             active: 'true'
         },
         resolver: yupResolver(authorSchema),
@@ -40,7 +38,7 @@ export default function NewAuthor() {
 
     const onSubmit = async (data) => {
         setBusy(busy => true);
-
+        data.password = randomPass();
         const result = await Insert(data);
 
         if (result.success) {
@@ -65,7 +63,6 @@ export default function NewAuthor() {
             email: '',
             birthDate: new Date(),
             password: '',
-            // token: '',
             active: 'true'
         })
         setModalOpen(false);
@@ -101,13 +98,6 @@ export default function NewAuthor() {
                             <Label htmlFor="birthDate">Data de Nascimento</Label>
                             <TextInput id="birthDate" type="date" {...register("birthDate")}/>
                             <span className="text-sm text-red-600">{errors?.birthDate?.message}</span>
-                        </div>
-                        <div className="mb-2">
-                            <Label htmlFor="password">Password</Label>
-                            <TextInput id="password" type="password" {...register("password")}/>
-                            {/* <TextInput id="password" {...register("password")} value={password} onChange={(e) => setPassword(e.target.value)}/> */}
-                            {/* <Button type="button" className="ml-2 px-3 py-1 bg-blue-500 text-white rounded-md" onClick={randomPass}>Gerar</Button> */}
-                            <span className="text-sm text-red-600">{errors?.password?.message}</span>
                         </div>
                         <fieldset className="flex max-w-md flex-col gap-4">
                             <Label htmlFor="active">Status</Label>
