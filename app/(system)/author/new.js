@@ -11,16 +11,23 @@ import { toast } from "react-toastify";
 import { Insert } from "./api";
 import { HiMail } from "react-icons/hi";
 
+const crypto = require('crypto');
+
 export default function NewAuthor() {
     const [modalOpen, setModalOpen] = useState(false);
     const [busy, setBusy] = useState(false);
-    const [password, setPassword] = useState('');
     const {setValue} = useForm();
 
     const randomPass = () => {
         const newPass = Math.random().toString(36).slice(-8); // Gera uma senha aleatória
         return newPass
       }
+
+    function createSHA256Hash(inputString) {
+        const hash = crypto.createHash('sha256');
+        hash.update(inputString);
+        return hash.digest('hex');
+    }
 
     const { control, register, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
@@ -39,6 +46,8 @@ export default function NewAuthor() {
     const onSubmit = async (data) => {
         setBusy(busy => true);
         data.password = randomPass();
+        console.log(data.password);
+        data.password = createSHA256Hash(data.password + 'khadfhyf388');
         const result = await Insert(data);
 
         if (result.success) {

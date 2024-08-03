@@ -17,12 +17,6 @@ export default function NewReader() {
     const [password, setPassword] = useState('');
     const {setValue} = useForm();
 
-    const randomPass = () => {
-        const newPass = Math.random().toString(36).slice(-8); // Gera uma senha aleatória
-        setPassword(newPass);
-        setValue("password", newPass);
-      }
-
     const { control, register, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
             name: '',
