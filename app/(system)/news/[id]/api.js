@@ -10,7 +10,6 @@ export async function CommentsFromNews(id) {
     };
 
     const url = process.env.API_URL + "/comment/news/" + id;
-    console.log(url)
     let reply = {
         success: undefined,
         message: '',
@@ -67,7 +66,7 @@ export async function AddReaction(newsId, type, readerId) {
             'Content-Type': 'application/json',
             'x-api-key': process.env.API_KEY
         },
-        body: JSON.stringify(data) //não funcionou
+        body: JSON.stringify(data)
     };
 
     const url = process.env.API_URL + '/reaction';
@@ -107,23 +106,21 @@ export async function AddReaction(newsId, type, readerId) {
     return reply;
 }
 
-export async function Insert(data) {
-
+export async function ListByNews(id) {
     const args = {
-        method: 'POST',
+        method: 'GET',
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
             'x-api-key': process.env.API_KEY
         },
-        body: JSON.stringify(data)
+        cache: 'no-store'
     };
 
-    const url = process.env.API_URL + "/reaction";
+    const url = process.env.API_URL + "/reaction/news/" + id;
 
     let reply = {
         success: undefined,
-        message: ''
+        message: '',
+        data: null,
     };
 
     await fetch(url, args).then((result) => {
@@ -131,7 +128,7 @@ export async function Insert(data) {
             if (result.status == 200) {
                 //ações em caso de sucesso
                 reply.success = true;
-                reply.message = "Reação salva com sucesso";
+                reply.data = resultData;
             }
             else {
                 //ações em caso de erro

@@ -1,12 +1,12 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { CommentsFromNews, AddReaction } from './api';
+import { CommentsFromNews, AddReaction, ListByNews } from './api';
 import { usePathname } from 'next/navigation';
 import { Button } from 'flowbite-react';
 import { Obtain } from '../../news/api';
 import Link from 'next/link';
 
-export default function NewsDetails({usuario}) {
+export default function NewsDetails({ usuario }) {
     const pathname = usePathname();
     const id = pathname.split('/').pop();
 
@@ -15,12 +15,26 @@ export default function NewsDetails({usuario}) {
     const [likes, setLikes] = useState(0);
     const [dislikes, setDislikes] = useState(0);
     const [busy, setBusy] = useState(false);
-    //próximo passo é passar o id do usuário para este componente
+    const [primeiroAcesso, setPrimeiroAcesso] = useState(true);
+
+    useEffect(() => {
+        if (primeiroAcesso) {
+            getData();
+            setPrimeiroAcesso(false);
+        }
+    }, [primeiroAcesso]);
+
     useEffect(() => {
         if (id) {
             getData();
         }
     }, [id]);
+
+    useEffect(() => {
+        if (news) {
+            getReactions();
+        }
+    }, [news]);
 
     const getData = async () => {
         setBusy(true);
@@ -28,25 +42,41 @@ export default function NewsDetails({usuario}) {
         const result2 = await CommentsFromNews(id);
         if (result.success) {
             setNews(result.data);
-            setLikes(result.data.likes);
-            setDislikes(result.data.dislikes);
         }
         if (result2.success) {
             setComments(result2.data);
         }
         setBusy(false);
-    }
+    };
+
+    const getReactions = async () => {
+        setLikes(0);
+        setDislikes(0);
+        const result3 = await ListByNews(id);
+        if (result3.success) {
+            let likesCount = 0;
+            let dislikesCount = 0;
+            result3.data.forEach(reaction => {
+                if (reaction.type === 1) {
+                    likesCount++;
+                } else if (reaction.type === 2) {
+                    dislikesCount++;
+                }
+            });
+            setLikes(likesCount);
+            setDislikes(dislikesCount);
+        }
+    };
 
     const handleReaction = async (type) => {
         setBusy(true);
         const result = await AddReaction(id, type, usuario.id);
-        console.log(result)
         if (result.success) {
-            setLikes(result.data.likes);
-            setDislikes(result.data.dislikes);
+            getReactions();
         }
         setBusy(false);
-    }
+        getReactions();
+    };
 
     return (
         <div>
@@ -79,12 +109,13 @@ export default function NewsDetails({usuario}) {
 
                     <div>
                         <Button onClick={() => handleReaction(1)}>Like</Button>
-                        <Button onClick={() => handleReaction(2)}>Dislike</Button>
                     </div>
                     <div>
-                        {/* <p>Likes: {likes}</p>
-                        <p>Dislikes: {dislikes}</p> */}
+                        <Button onClick={() => handleReaction(2)}>Dislike</Button>
                     </div>
+
+                    <p>Likes: {likes}</p>
+                    <p>Dislikes: {dislikes}</p>
 
                     <Button as={Link} href="/" color="gray">
                         Voltar
