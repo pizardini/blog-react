@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { CommentsFromNews, AddReaction, ListByNews } from './api';
 import { usePathname } from 'next/navigation';
 import { Button } from 'flowbite-react';
-import { Obtain } from '../../news/api';
+import { Obtain } from '../api';
 import Link from 'next/link';
 
 export default function NewsDetails({ usuario }) {

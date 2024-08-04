@@ -4,12 +4,13 @@ import NewAuthor from "./new";
 import { AuthorContext } from "./context";
 import { useEffect, useState } from "react";
 import { Button, Spinner, Table } from "flowbite-react";
-import { List } from "./api";
+import { ListQt } from "./api";
 import { toast } from "react-toastify";
 import RemoveAuthor from "./remove";
 import EditAuthor from "./update";
+import Link from "next/link";
 
-export default function Author() {
+export default function Author (usuario) {
 
     const [update, setUpdate] = useState(true);
     const [data, setData] = useState(null);
@@ -17,20 +18,24 @@ export default function Author() {
     const [operation, setOperation] = useState({ id: null, action: null });
 
     const updateList = async () => {
-
         setBusy(p => true);
-        const result = await List();
-
+        const result = await ListQt();
+        console.log(result)
     if (result.success && result.data !== null) {
         let grid = result.data.map((p) =>
             <Table.Row key={p.id}>
-                <Table.Cell>{p.name}</Table.Cell>
-                <Table.Cell>
-                <Button size="sm" onClick={() => { setOperation({ id: p.id, action: 'edit' }) }}>Editar</Button>
-                </Table.Cell>
-                <Table.Cell>
-                <Button size="sm" color="failure" onClick={() => { setOperation({ id: p.id, action: 'delete' }) }}>Remover</Button>
-                </Table.Cell>
+                    <Table.Cell>{p.name}</Table.Cell>    
+                    <Table.Cell>{p.newscount}</Table.Cell>
+                    <Table.Cell>
+                        <Button as={Link} href={`/newsAuthor/${p.nickname}`}>Notícias</Button>
+                    </Table.Cell>
+                    { usuario.usuario.admin ? <Table.Cell>
+                    <Button size="sm" onClick={() => { setOperation({ id: p.id, action: 'edit' }) }}>Editar</Button>
+                    </Table.Cell> : null}
+                    { usuario.usuario.admin ? <Table.Cell>
+                    <Button size="sm" color="failure" onClick={() => { setOperation({ id: p.id, action: 'delete' }) }}>Remover</Button>
+                    </Table.Cell> : null}    
+
             </Table.Row>
         );
         setData(grid);
@@ -81,6 +86,12 @@ export default function Author() {
                 <Table hoverable>
                     <Table.Head>
                         <Table.HeadCell>Nome</Table.HeadCell>
+                        <Table.HeadCell>
+                            Qtd. Notícias
+                        </Table.HeadCell>
+                        <Table.HeadCell>
+                            <span>&nbsp;</span>
+                        </Table.HeadCell>
                         <Table.HeadCell>
                             <span>&nbsp;</span>
                         </Table.HeadCell>

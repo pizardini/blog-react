@@ -1,16 +1,16 @@
 'use server'
 
-import NewsDetails from "./page";
+import Author from "./page";
 import { dados } from "@/app/login/actions";
 
 export default async function Layout({ children }) {
 
 const usuario = await dados()    
     return (
-        <NewsDetails usuario={{id: usuario.user.id }}>
+        <Author usuario={{id: usuario.user.id, admin: usuario.user.type === 0 }}>
         <>
             {children}
         </>
-        </NewsDetails>
+        </Author>
     )
 }
