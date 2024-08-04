@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { Pesquisar } from "../../author/api";
 import { ListNewsAuthor } from "../../news/api";
-import { Spinner } from "flowbite-react";
+import { Spinner, Table } from "flowbite-react";
 
 export default function ListClient({ nickname }) {
 
@@ -12,21 +12,21 @@ export default function ListClient({ nickname }) {
     const [lista, setLista] = useState(null);
     const [primeiroAcesso, setPrimeiroAcesso] = useState(null);
 
-    console.log(nickname);
-
     const obterDados = async () => {
         setBusy(true);
-        const resultado = await Pesquisar({ Nickname: nickname });
-        console.log(resultado);
-        if (resultado.success && resultado.data.length == 1) {
-            setDado(resultado.data[0].nickname);
+        const result = await Pesquisar({ Nickname: nickname });
+        if (result.success && result.data.length == 1) {
+            setDado(result.data[0].nickname);
 
-            const lista = await ListNewsAuthor(resultado.data[0].id);
+            const lista = await ListNewsAuthor(result.data[0].id);
+            console.log(lista)
             if (lista.success) {
                 let grid = lista.data.map((p) =>
-                    <p key={p.id}>{p.nickname}</p>
+                    <Table.Row key={p.id}>
+                        <Table.Cell>{p.headline}</Table.Cell>
+                        <Table.Cell>{p.subhead}</Table.Cell>
+                    </Table.Row>
                 );
-
                 setLista(grid);
             }
         }
@@ -49,12 +49,18 @@ export default function ListClient({ nickname }) {
     return (
         <>
             {busy && <Spinner />}
-            <div className="mt-2">
-                Nome: {dado}
-            </div>
-            <div>
-                Cursos: {lista}
-            </div>
+            {busy || <div className="mt-2">
+                <Table hoverable>
+                    <Table.Head>
+                        <Table.HeadCell>Título</Table.HeadCell>
+                        <Table.HeadCell>Subtítulo</Table.HeadCell>
+                    </Table.Head>
+                    <Table.Body>
+                        {lista}
+                    </Table.Body>
+                </Table>
+                </div>
+            }
         </>
     )
 }

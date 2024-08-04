@@ -20,7 +20,6 @@ export default function News() {
 
         setBusy(p => true);
         const result = await List();
-
     if (result.success && result.data !== null) {
         let grid = result.data.map((p) =>
             <Table.Row key={p.id}>

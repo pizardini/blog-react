@@ -27,7 +27,7 @@ export default function Author (usuario) {
                     <Table.Cell>{p.name}</Table.Cell>    
                     <Table.Cell>{p.newscount}</Table.Cell>
                     <Table.Cell>
-                        <Button as={Link} href={`/newsAuthor/${p.nickname}`}>Notícias</Button>
+                        <Button as={Link} href={`/list/${p.nickname}`}>Notícias</Button>
                     </Table.Cell>
                     { usuario.usuario.admin ? <Table.Cell>
                     <Button size="sm" onClick={() => { setOperation({ id: p.id, action: 'edit' }) }}>Editar</Button>

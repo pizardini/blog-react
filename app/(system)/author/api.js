@@ -339,8 +339,7 @@ export async function Pesquisar(data) {
         body: JSON.stringify(data)
     };
 
-    const url = process.env.API_URL + "/tipocurso/pesquisa/" ;
-
+    const url = process.env.API_URL + "/author/pesquisa/" ;
     let retorno = {
         success: undefined,
         message: '',
