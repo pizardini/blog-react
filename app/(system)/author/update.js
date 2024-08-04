@@ -120,28 +120,6 @@ export default function EditAuthor({ id }) {
                         <TextInput id="name" placeholder="Informe o nome do autor" {...register("name")} />
                         <span className="text-sm text-red-600">{errors?.name?.message}</span>
                     </div>
-                    <div className="mb-2">
-                        <Label htmlFor="nickname">Apelido</Label>
-                        <TextInput id="nickname" placeholder="Informe o apelido" {...register("nickname")} />
-                        <span className="text-sm text-red-600">{errors?.nickname?.message}</span>
-                    </div>
-                    <div className="mb-2">
-                        <Label htmlFor="email">E-mail</Label>
-                        <TextInput id="email" icon={HiMail} placeholder="Informe o e-mail" {...register("email")} required/>
-                        <span className="text-sm text-red-600">{errors?.email?.message}</span>
-                    </div>
-                    <div className="mb-2">
-                        <Label htmlFor="birthDate">Data de Nascimento</Label>
-                        <TextInput id="birthDate" type="date" {...register("birthDate")}/>
-                        <span className="text-sm text-red-600">{errors?.birthDate?.message}</span>
-                    </div>
-                    <div className="mb-2">
-                        <Label htmlFor="password">Password</Label>
-                        <TextInput id="password" type="password" {...register("password")}/>
-                        {/* <TextInput id="password" {...register("password")} value={password} onChange={(e) => setPassword(e.target.value)}/> */}
-                        {/* <Button type="button" className="ml-2 px-3 py-1 bg-blue-500 text-white rounded-md" onClick={randomPass}>Gerar</Button> */}
-                        <span className="text-sm text-red-600">{errors?.password?.message}</span>
-                    </div>
                     <fieldset className="flex max-w-md flex-col gap-4">
                         <Label htmlFor="active">Status</Label>
                         <div className="flex items-center gap-2">

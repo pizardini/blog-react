@@ -17,6 +17,11 @@ function createSHA256Hash(inputString) {
     return hash.digest('hex');
 }
 
+const randomToken = () => {
+    const code = Math.random().toString(36).slice(-8); // Gera uma senha aleatória
+    return code
+  }
+
 export default function NewUser() {
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -28,6 +33,7 @@ export default function NewUser() {
             email: '',
             birthDate: '',
             password: '',
+            code: '',
             active: false
         },
         // resolver: yupResolver(newUserSchema),
@@ -37,6 +43,8 @@ export default function NewUser() {
         setBusy(busy => true);
         data.active = data.active === "true" || data.active === true;
         data.password = createSHA256Hash(data.password + 'khadfhyf388');
+        data.code = randomToken();
+        console.log(data.code);
         const resultado = await Insert(data);
         if (resultado.success) {
             closeModal();
@@ -58,6 +66,7 @@ export default function NewUser() {
             email: '',
             birthDate: new Date(),
             password: '',
+            code: '',
             active: false
         })
         setModalOpen(false);

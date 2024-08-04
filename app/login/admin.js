@@ -18,6 +18,11 @@ function createSHA256Hash(inputString) {
     return hash.digest('hex');
 }
 
+const randomToken = () => {
+    const code = Math.random().toString(36).slice(-8); // Gera uma senha aleatória
+    return code
+  }
+
 export default function NewAdmin() {
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -28,7 +33,9 @@ export default function NewAdmin() {
         defaultValues: {
             name: '',
             email: '',
-            password: ''
+            password: '',
+            code: '',
+            active: true
         },
         // resolver: yupResolver(newUserSchema),
     });
@@ -59,7 +66,9 @@ export default function NewAdmin() {
 
     const onSubmit = async (data) => {
         setBusy(busy => true);
+        data.code = randomToken();
         data.password = createSHA256Hash(data.password + 'khadfhyf388');
+        console.log(data)
         const resultado = await InserirAdm(data);
 
         if (resultado.success) {
@@ -80,7 +89,8 @@ export default function NewAdmin() {
         reset({
             name: '',
             email: '',
-            password: ''
+            password: '',
+            code: ''
         })
         setModalOpen(false);
     }

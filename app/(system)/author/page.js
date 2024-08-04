@@ -20,7 +20,6 @@ export default function Author (usuario) {
     const updateList = async () => {
         setBusy(p => true);
         const result = await ListQt();
-        console.log(result)
     if (result.success && result.data !== null) {
         let grid = result.data.map((p) =>
             <Table.Row key={p.id}>
