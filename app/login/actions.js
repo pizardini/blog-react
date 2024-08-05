@@ -10,7 +10,7 @@ export async function login(data) {
         
     }
     catch(error) {
-        // 
+
     if(isRedirectError(error))
             throw error;
 

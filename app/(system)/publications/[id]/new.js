@@ -67,7 +67,7 @@ export default function NewPublication() {
         <>
             <Button onClick={() => { setModalOpen(true) }}>
                 <HiPlus className="mr-1 h-5 w-5" />
-                <span>Publicar</span>
+                <span>Novo</span>
             </Button>
             <Modal show={modalOpen} onClose={closeModal}>
                 <form onSubmit={handleSubmit(onSubmit)}>

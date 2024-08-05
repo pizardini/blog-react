@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Button, Label, Modal, Select, TextInput, Textarea, Radio  } from "flowbite-react"
-import { HiPlus } from "react-icons/hi";
 import { commentSchema } from "./schema";
 import { CommentContext } from "./context";
 import { toast } from "react-toastify";

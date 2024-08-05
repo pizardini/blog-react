@@ -42,7 +42,6 @@ export default function Publications({ id }) {
         result.data.published = true;
         result.data.publicationDateTime = new Date();
         result.data.id = newsId;
-        console.log(result.data.id);
         const response = await Update(result.data);
         if (response.success) {
             obterDados(); // Re-obter os dados para atualizar a lista
