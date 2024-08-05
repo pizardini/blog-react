@@ -13,6 +13,7 @@ export default function EditUser({ id }) {
     const [modalOpen, setModalOpen] = useState(true);
     const [busy, setBusy] = useState(false);
     const [primeiroAcesso, setPrimeiroAcesso] = useState(null);
+    
 
     const { register, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
@@ -30,6 +31,7 @@ export default function EditUser({ id }) {
     const onSubmit = async (data) => {
         setBusy(true);
         data.id = id;
+        data.nickname = "teste";
         const resultado = await Update(data);
 
         if (resultado.success) {
@@ -60,9 +62,7 @@ export default function EditUser({ id }) {
 
     const getData = async () => {
         setBusy(true);
-
         const result = await Obtain(id);
-
         if (result.success) {
             if (result.message !== '')
                 toast.success(result.message);
@@ -70,6 +70,7 @@ export default function EditUser({ id }) {
             let input = result.data.birthDate;
             let dateTime = new Date(input);
             let formattedDate = dateTime.toISOString().split('T')[0];
+            console.log(result.data)
             reset({ 
                 name: result.data.name, 
                 nickname: result.data.nickname, 

@@ -22,7 +22,8 @@ const data = adjustToGMT3(usuario.user.birthdate)
         <Profile usuario={{nome: usuario.user.name, 
         email: usuario.user.email, 
         admin: usuario.user.type === 0,
-        birthdate: data}}>
+        birthdate: data,
+        id: usuario.user.id}}>
         <>
             {children}
         </>

@@ -1,3 +1,5 @@
+'use server'
+
 export async function Obtain(id) {
     const args = {
         method: 'GET',
@@ -6,9 +8,7 @@ export async function Obtain(id) {
         },
         cache: 'no-store'
     };
-
     const url = process.env.API_URL + "/user/" + id;
-
     let reply = {
         success: undefined,
         message: '',
@@ -48,6 +48,7 @@ export async function Obtain(id) {
         reply.status = false;
         reply.message = ex.message;
     });
+    console.log("reply------------------"+reply)
     return reply;
 }
 
