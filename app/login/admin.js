@@ -68,7 +68,6 @@ export default function NewAdmin() {
         setBusy(busy => true);
         data.code = randomToken();
         data.password = createSHA256Hash(data.password + 'khadfhyf388');
-        console.log(data)
         const resultado = await InserirAdm(data);
 
         if (resultado.success) {

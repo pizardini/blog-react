@@ -42,6 +42,7 @@ export const authConfig = {
             session.user.type = user.data.type;
             session.user.active = user.data.active;
             session.user.id = user.data.id;
+            session.user.birthdate = user.data.birthDate
             return session;
         }
     },

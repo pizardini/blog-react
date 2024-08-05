@@ -19,7 +19,6 @@ export default function ListClient({ nickname }) {
             setDado(result.data[0].nickname);
 
             const lista = await ListNewsAuthor(result.data[0].id);
-            console.log(lista)
             if (lista.success) {
                 let grid = lista.data.map((p) =>
                     <Table.Row key={p.id}>

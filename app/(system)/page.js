@@ -24,7 +24,7 @@ export default function Home() {
                 hour: '2-digit',
                 minute: '2-digit',
             });
-    };
+        };
 
         if (result.success && result.data !== null) {
             let grid = result.data.map((p) => {

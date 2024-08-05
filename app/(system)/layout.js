@@ -5,10 +5,25 @@ import { dados } from "../login/actions";
 
 export default async function Layout({ children }) {
 
-const usuario = await dados()    
+const usuario = await dados()
+
+const getRole = (type) => {
+    switch(type) {
+        case 0:
+            return "Administrador";
+        case 1:
+            return "Autor";
+        case 2:
+            return "Leitor";
+    }
+};
 
     return (
-        <LayoutClient usuario={{nome: usuario.user.name, email: usuario.user.email, admin: usuario.user.type === 0, role: usuario.user.type }}>
+        <LayoutClient usuario={{nome: usuario.user.name, 
+        email: usuario.user.email, 
+        admin: usuario.user.type === 0,
+        birthDate: usuario.user.birthDate,
+        role: getRole(usuario.user.type) }}>
         <>
             {children}
         </>

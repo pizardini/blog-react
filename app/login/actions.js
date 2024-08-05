@@ -10,7 +10,7 @@ export async function login(data) {
         
     }
     catch(error) {
-        // console.log("data: " + JSON.stringify(data, null, 2));
+        // 
     if(isRedirectError(error))
             throw error;
 
