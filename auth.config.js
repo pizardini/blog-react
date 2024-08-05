@@ -1,14 +1,16 @@
 import { Obter } from "./app/login/api";
 
-const adminPaths = ['/author', '/reader', '/news', '/comment'];
-const authorPaths = ['/news', '/publications'];
-
+const adminPaths = ['/reader', '/news', '/comment'];
+const authorPaths = ['/publications'];
 export const authConfig = {
     pages: {
         signIn: '/login',
     }, callbacks: {
         authorized({ auth, request: { nextUrl } }) {
 
+            if (nextUrl.pathname === '/' || nextUrl.pathname.startsWith('/list') || nextUrl.pathname === '/author') {
+                return true;
+            }
             const isLoggedIn = !!auth?.user;
 
             //Se não estiver autenticado, vai para a tela de login

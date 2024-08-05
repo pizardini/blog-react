@@ -23,18 +23,21 @@ export default function Author (usuario) {
     if (result.success && result.data !== null) {
         let grid = result.data.map((p) =>
             <Table.Row key={p.id}>
-                    <Table.Cell>{p.name}</Table.Cell>    
-                    <Table.Cell>{p.newscount}</Table.Cell>
-                    <Table.Cell>
-                        <Button as={Link} href={`/list/${p.nickname}`}>Notícias</Button>
-                    </Table.Cell>
-                    { usuario.usuario.admin ? <Table.Cell>
+                <Table.Cell>{p.name}</Table.Cell>    
+                <Table.Cell>{p.newscount}</Table.Cell>
+                <Table.Cell>
+                    <Button as={Link} href={`/list/${p.nickname}`}>Notícias</Button>
+                </Table.Cell>
+                {usuario?.admin && (
+                <Table.Cell>
                     <Button size="sm" onClick={() => { setOperation({ id: p.id, action: 'edit' }) }}>Editar</Button>
-                    </Table.Cell> : null}
-                    { usuario.usuario.admin ? <Table.Cell>
+                </Table.Cell>
+                )}
+                {usuario?.admin && (
+                <Table.Cell>
                     <Button size="sm" color="failure" onClick={() => { setOperation({ id: p.id, action: 'delete' }) }}>Remover</Button>
-                    </Table.Cell> : null}    
-
+                </Table.Cell>
+                )}
             </Table.Row>
         );
         setData(grid);
@@ -75,11 +78,12 @@ export default function Author (usuario) {
     return(
         <>
             <p className="text-2xl">Autores</p>
+            {usuario?.admin && (
             <AuthorContext.Provider value={{update: setUpdate, close: closeModals}}>
                 <NewAuthor />
                 {modal}
             </AuthorContext.Provider>
-
+            )}
             {busy && <Spinner />}
             {busy || <div className="mt-2">
                 <Table hoverable>

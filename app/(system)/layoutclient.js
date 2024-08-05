@@ -9,7 +9,6 @@ import { logout } from "../login/actions";
 import { userAgent } from "next/server";
 
 export default function LayoutClient({ children, usuario }) {
-
     const route = usePathname();
     const handleSair = async () => {
         await logout();
@@ -22,25 +21,33 @@ export default function LayoutClient({ children, usuario }) {
                         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Blog Notícias</span>
                     </NavbarBrand>
                     <div className="flex md:order-2">
-                        <Dropdown arrowIcon={false} inline label={<Avatar rounded />}>
-                            <DropdownHeader>
-                                <span className="block text-sm">{usuario.nome}</span>
-                                <span className="block truncate text-sm font-medium">{usuario.email}</span>
-                                <span className="block text-sm">{usuario.role}</span>
-                                <Link href="/profile" className="block text-sm">Ver Perfil</Link>
-                                <Link href={`/publications/${usuario.id}`} className="block text-sm">Minhas Notícias</Link>
-                            </DropdownHeader>
-                            <DropdownItem onClick={handleSair}>Sair</DropdownItem>
-                        </Dropdown>
+                    {usuario ? (
+                            <Dropdown arrowIcon={false} inline label={<Avatar rounded />}>
+                                <DropdownHeader>
+                                    <span className="block text-sm">{usuario.nome}</span>
+                                    <span className="block truncate text-sm font-medium">{usuario.email}</span>
+                                    <span className="block text-sm">{usuario.role}</span>
+                                    <Link href="/profile" className="block text-sm">Ver Perfil</Link>
+                                    <Link href={`/publications/${usuario.id}`} className="block text-sm">Minhas Notícias</Link>
+                                </DropdownHeader>
+                                <DropdownItem onClick={handleSair}>Sair</DropdownItem>
+                            </Dropdown>
+                        ) : (
+                            <Link href="/login" className="text-sm font-medium dark:text-white">Login</Link>
+                        )}
                         <NavbarToggle />
                     </div>
                     <NavbarCollapse>
                         <NavbarLink as={Link} href="/" active={route === '/'}>Início</NavbarLink>
-                        <NavbarLink as={Link} href="/news" active={route === '/news'}>Notícias</NavbarLink>
-                        { usuario.admin ? <NavbarLink as={Link} href="/comment" active={route === '/comment'}>Comentários</NavbarLink> : null}
-                        { usuario.admin ? <NavbarLink as={Link} href="/author" active={route === '/author'}>Autores</NavbarLink> : null}
-                        { usuario.admin ? <NavbarLink as={Link} href="/reader" active={route === '/reader'}>Leitores</NavbarLink> : null}
-                        { usuario.admin ? <NavbarLink as={Link} href="/reaction" active={route === '/reaction'}>Reações</NavbarLink> : null}
+                        <NavbarLink as={Link} href="/author" active={route === '/author'}>Autores</NavbarLink>
+                        {usuario?.admin && (
+                            <>
+                                <NavbarLink as={Link} href="/comment" active={route === '/comment'}>Comentários</NavbarLink>
+                                <NavbarLink as={Link} href="/news" active={route === '/news'}>Notícias</NavbarLink>
+                                <NavbarLink as={Link} href="/reader" active={route === '/reader'}>Leitores</NavbarLink>
+                                <NavbarLink as={Link} href="/reaction" active={route === '/reaction'}>Reações</NavbarLink>
+                            </>
+                        )}
                     </NavbarCollapse>
                 </Navbar>
             </header>
