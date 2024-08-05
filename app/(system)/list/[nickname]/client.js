@@ -30,7 +30,7 @@ export default function ListClient({ nickname }) {
             }
         }
         else {
-            setDado("Tipo de curso não encontrado");
+            setDado("Autor não encontrado");
         }
         setBusy(p => false);
     }

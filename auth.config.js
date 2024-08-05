@@ -1,7 +1,7 @@
 import { Obter } from "./app/login/api";
 
-const adminPaths = ['/author', '/reader', '/news'];
-const authorPaths = ['/news'];
+const adminPaths = ['/author', '/reader', '/news', '/comment'];
+const authorPaths = ['/news', '/publications'];
 
 export const authConfig = {
     pages: {
@@ -42,7 +42,7 @@ export const authConfig = {
             session.user.type = user.data.type;
             session.user.active = user.data.active;
             session.user.id = user.data.id;
-            session.user.birthdate = user.data.birthDate
+            session.user.birthdate = user.data.birthDate;
             return session;
         }
     },

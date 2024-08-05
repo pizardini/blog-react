@@ -11,7 +11,6 @@ import { userAgent } from "next/server";
 export default function LayoutClient({ children, usuario }) {
 
     const route = usePathname();
-
     const handleSair = async () => {
         await logout();
     }
@@ -29,6 +28,7 @@ export default function LayoutClient({ children, usuario }) {
                                 <span className="block truncate text-sm font-medium">{usuario.email}</span>
                                 <span className="block text-sm">{usuario.role}</span>
                                 <Link href="/profile" className="block text-sm">Ver Perfil</Link>
+                                <Link href={`/publications/${usuario.id}`} className="block text-sm">Minhas Notícias</Link>
                             </DropdownHeader>
                             <DropdownItem onClick={handleSair}>Sair</DropdownItem>
                         </Dropdown>
@@ -37,7 +37,7 @@ export default function LayoutClient({ children, usuario }) {
                     <NavbarCollapse>
                         <NavbarLink as={Link} href="/" active={route === '/'}>Início</NavbarLink>
                         <NavbarLink as={Link} href="/news" active={route === '/news'}>Notícias</NavbarLink>
-                        <NavbarLink as={Link} href="/comment" active={route === '/comment'}>Comentários</NavbarLink>
+                        { usuario.admin ? <NavbarLink as={Link} href="/comment" active={route === '/comment'}>Comentários</NavbarLink> : null}
                         { usuario.admin ? <NavbarLink as={Link} href="/author" active={route === '/author'}>Autores</NavbarLink> : null}
                         { usuario.admin ? <NavbarLink as={Link} href="/reader" active={route === '/reader'}>Leitores</NavbarLink> : null}
                         { usuario.admin ? <NavbarLink as={Link} href="/reaction" active={route === '/reaction'}>Reações</NavbarLink> : null}
